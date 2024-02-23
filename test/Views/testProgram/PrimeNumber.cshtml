@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "PrimeNumber";
+}
+
+
+<div class="text-center">
+    <div>
+        <label class="h3">จำนวนเฉพาะ (Prime Number)</label><br />
+        <div class="m-4">
+            <label>
+                ในคณิตศาสตร์ จำนวนเฉพาะ (อังกฤษ: prime number)
+            </label>
+            <label>คือ จำนวนเต็มบวกที่มากกว่า 1 และมีตัวหารที่เป็นบวกอยู่ 2 ตัว คือ 1 กับตัวมันเอง ตรงข้ามกับจำนวนประกอบลำดับของจำนวนเฉพาะเริ่มต้นด้วย</label>
+            <label>2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, ...</label>
+        </div>
+    </div>
+    <div class="d-inline-block justify-content-center m-3">
+        <label class="h5 d-block m-2 mb-4">ตรวจสอบจำนวนเฉพาะ</label>
+        <div class="d-flex justify-content-center">
+            <input class="form-control me-2" type="number" min="0" id="number" />
+            <button id="buttonCheck" class="btn btn-outline-secondary">check</button>
+        </div>
+    </div>
+    <div>
+        <ul id="answerList" class="list-unstyled">
+        </ul>
+        <button id="clearList" class="btn btn-outline-secondary">clear</button>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var item = localStorage.getItem("answerlist");
+            if (item == null) {
+                $('#clearList').hide();
+            }
+            else if (item != null) {
+                var child = item.split(',');
+                for (var i = 0; i < child.length; i++) {
+                    $("#answerList").append("<li>" + child[i] + "</li>");
+                    stringAnswer.push(child[i]);
+                }
+                $('#clearList').show();
+            }
+        });
+        $('#clearList').click(function () {
+            $("#answerList").remove.child;
+            localStorage.clear();
+            location.reload();
+        });
+        var stringAnswer = new Array;
+        $("#buttonCheck").click(function () {
+            // var number = Number($('#number').val());
+            var number = $('#number').val();
+
+            $.getJSON('/api/CheckPrime/' + number, function (data) {
+                var answer = '';
+                if (data == true) {
+                    answer = 'เป็นจำนวนเฉพาะ';
+                }
+                else if (data == false) {
+                    answer = 'ไม่เป็นจำนวนเฉพาะ';
+                }
+                $("#answerList").append("<li>" + number + answer + "</li>");
+                stringAnswer.push(number + answer);
+                localStorage.setItem("answerlist", stringAnswer)
+                $('#clearList').show();
+            });
+        });
+    </script>
+}

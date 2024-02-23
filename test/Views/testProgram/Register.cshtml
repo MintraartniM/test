@@ -1,0 +1,66 @@
+﻿@model test.Data.UserRegister
+@{
+    ViewData["Title"] = "Register";
+}
+
+<form asp-action="saveRegister" method="post" id="form1" class="d-flex justify-content-center">
+    <div class="card widthCard">
+        <div class="card-header text-center">
+            <label class="h4">Register</label>
+        </div>
+        <div class="card-body text-center">
+            <label class="m-4">Create your account.It's free and only takes a minute</label>
+            <div>
+                <div class="d-md-flex justify-content-between my-0 me-md-0 me-5 ">
+                    <input class="mx-4 my-md-0 my-4 w-100 form-control" asp-for="FirstName" placeholder="FirstName" required />
+                    <input class="mx-4 w-100 form-control" asp-for="LastName" placeholder="LastName" required />
+                </div>
+                <div class="d-block justify-content-lg-center my-0 me-5">
+                    <input type="email" class="m-4 w-100 form-control" asp-for="Email" placeholder="Email" required  id="email"/>
+                    <input type="password" class="m-4 w-100 form-control" asp-for="Password" placeholder="Password" required id="Password" onchange="checkpassword()" />
+                    <input type="password" class="m-4 w-100 form-control" placeholder="Confirm Password" required id="ConfirmPassword" onchange="checkpassword()" />
+                    <button id="buttonSubmit" class="btn btn-outline-secondary w-100 m-4">Register Now</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <p class="text-end text-secondary opacity-25 p-0 m-0">create by minnie <i class="fa-regular fa-face-kiss-wink-heart"></i></p>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script>
+        var check = false;
+        function checkpassword() {
+            var passwprd = $("#Password").val();
+            var confirnPassword = $("#ConfirmPassword").val();
+            if (passwprd == confirnPassword) {
+                check = true;
+                $("#ConfirmPassword").removeClass("bg-danger").addClass("bg-white");
+                $("#ConfirmPassword").removeClass("text-warning").addClass("text-black");
+            }
+            else { 
+                check = false;
+                $("#ConfirmPassword").removeClass("bg-white").addClass("bg-danger");
+                $("#ConfirmPassword").removeClass("text-black").addClass("text-warning");
+            }
+        }
+
+        $("#buttonSubmit").click(function () {
+            var mail = $('#email').val();
+            var testEmail = /^([\w-\.]+@@([\w-]+\.)+[\w-]{2,4})?$/;
+            if (check == true) {
+                if (testEmail.test(mail)) {
+                    $('#form1').submit();
+                }
+            }
+            else{
+                alert('password not match');
+            }
+        });
+
+    </script>
+}
+
+
